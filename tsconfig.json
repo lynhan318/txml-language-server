@@ -1,6 +1,9 @@
 {
   "extends": "./shared.tsconfig.json",
-  "include": ["src"],
-  "exclude": ["node_modules", ".vscode-test"],
-  "references": [{ "path": "./client" }, { "path": "./server" }]
+  "compilerOptions": {
+    "outDir": "out",
+    "rootDir": "src"
+  },
+  "references": [{ "path": "./client" }, { "path": "./server" }],
+  "include": ["src"]
 }
