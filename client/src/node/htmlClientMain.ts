@@ -31,13 +31,11 @@ export function activate(context: ExtensionContext) {
     clientPackageJSON.main.indexOf("/dist/") !== -1 ? "dist" : "out"
   }/node/htmlServerMain`;
   const serverModule = context.asAbsolutePath(serverMain);
-
+  console.log("serverMain", serverMain);
+  console.log("serverModule", serverModule);
   // The debug options for the server
   const debugOptions = {
-    execArgv: [
-      "--nolazy",
-      "--inspect=" + (8000 + Math.round(Math.random() * 999)),
-    ],
+    execArgv: ["--nolazy", "--inspect=" + 6009],
   };
 
   // If the extension is launch in debug mode the debug server options are use

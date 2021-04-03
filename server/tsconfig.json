@@ -1,7 +1,7 @@
 {
   "extends": "../shared.tsconfig.json",
   "compilerOptions": {
-    "lib": ["ESNext", "WebWorker"],
+    "lib": ["ES2018", "WebWorker"],
     "outDir": "./out"
   },
   "include": ["src"]
