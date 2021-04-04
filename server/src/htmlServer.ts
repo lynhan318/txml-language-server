@@ -55,7 +55,7 @@ import { RequestService, getRequestService } from "./requests";
 
 namespace CustomDataChangedNotification {
   export const type: NotificationType<string[]> = new NotificationType(
-    "html/customDataChanged"
+    "txml/customDataChanged"
   );
 }
 
@@ -64,7 +64,7 @@ namespace TagCloseRequest {
     TextDocumentPositionParams,
     string | null,
     any
-  > = new RequestType("html/tag");
+  > = new RequestType("txml/tag");
 }
 
 // experimental: semantic tokens
@@ -77,13 +77,13 @@ namespace SemanticTokenRequest {
     SemanticTokenParams,
     number[] | null,
     any
-  > = new RequestType("html/semanticTokens");
+  > = new RequestType("txml/semanticTokens");
 }
 namespace SemanticTokenLegendRequest {
   export const type: RequestType0<
     { types: string[]; modifiers: string[] } | null,
     any
-  > = new RequestType0("html/semanticTokenLegend");
+  > = new RequestType0("txml/semanticTokenLegend");
 }
 
 export interface RuntimeEnvironment {
@@ -105,7 +105,7 @@ export function startServer(
 
   let languageModes: LanguageModes;
 
-  let clientSnippetSupport = false;
+  let clientSnippetSupport = true;
   let dynamicFormatterRegistration = false;
   let scopedSettingsSupport = false;
   let workspaceFoldersSupport = false;
@@ -134,7 +134,7 @@ export function startServer(
         const scopeUri = textDocument.uri;
         const configRequestParam: ConfigurationParams = {
           items: [
-            { scopeUri, section: "tcss" },
+            { scopeUri, section: "css" },
             { scopeUri, section: "txml" },
             { scopeUri, section: "javascript" },
           ],
@@ -154,7 +154,7 @@ export function startServer(
   connection.onInitialize(
     (params: InitializeParams): InitializeResult => {
       const initializationOptions = params.initializationOptions;
-
+      connection.window.connection.console.log("params.data");
       workspaceFolders = (<any>params).workspaceFolders;
       if (!Array.isArray(workspaceFolders)) {
         workspaceFolders = [];
@@ -165,13 +165,14 @@ export function startServer(
           });
         }
       }
-
+      console.log("workSpaceFoler", workspaceFolders);
       requestService = getRequestService(
         initializationOptions?.handledSchemas || ["file"],
         connection,
         runtime
       );
 
+      console.log("requestService", requestService);
       const workspace = {
         get settings() {
           return globalSettings;
@@ -191,6 +192,7 @@ export function startServer(
         requestService
       );
 
+      console.log("languageModes", languageModes);
       const dataPaths: string[] = initializationOptions?.dataPaths || [];
       fetchHTMLDataProviders(dataPaths, requestService).then(
         (dataProviders) => {
@@ -217,10 +219,10 @@ export function startServer(
         return c;
       }
 
-      clientSnippetSupport = getClientCapability(
-        "textDocument.completion.completionItem.snippetSupport",
-        false
-      );
+      // clientSnippetSupport = getClientCapability(
+      //   "textDocument.completion.completionItem.snippetSupport",
+      //   false
+      // );
       dynamicFormatterRegistration =
         getClientCapability(
           "textDocument.rangeFormatting.dynamicRegistration",
@@ -230,14 +232,17 @@ export function startServer(
         "workspace.configuration",
         false
       );
+      console.log("scopedSettingsSupport", scopedSettingsSupport);
       workspaceFoldersSupport = getClientCapability(
         "workspace.workspaceFolders",
         false
       );
+      console.log("workspaceFolderSuypport", workspaceFoldersSupport);
       foldingRangeLimit = getClientCapability(
         "textDocument.foldingRange.rangeLimit",
         Number.MAX_VALUE
       );
+      console.log("foldingRangeLimit", foldingRangeLimit);
       const capabilities: ServerCapabilities = {
         textDocumentSync: TextDocumentSyncKind.Incremental,
         completionProvider: clientSnippetSupport
@@ -261,6 +266,7 @@ export function startServer(
         renameProvider: true,
         linkedEditingRangeProvider: true,
       };
+      console.log("clientCapacities", capabilities);
       return { capabilities };
     }
   );
@@ -417,19 +423,20 @@ export function startServer(
           document,
           textDocumentPosition.position
         );
+        connection.window.showInformationMessage(mode.getId());
         if (!mode || !mode.doComplete) {
           return { isIncomplete: true, items: [] };
         }
         const doComplete = mode.doComplete;
 
-        if (mode.getId() !== "html") {
+        if (mode.getId() !== "txml") {
           /* __GDPR__
 					"html.embbedded.complete" : {
 						"languageId" : { "classification": "SystemMetaData", "purpose": "FeatureInsight" }
 					}
 				 */
           connection.telemetry.logEvent({
-            key: "html.embbedded.complete",
+            key: "txml.embbedded.complete",
             value: { languageId: mode.getId() },
           });
         }
@@ -454,7 +461,6 @@ export function startServer(
       token
     );
   });
-
   connection.onCompletionResolve((item, token) => {
     return runSafe(
       async () => {

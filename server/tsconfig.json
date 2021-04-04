@@ -1,8 +1,12 @@
 {
   "extends": "../shared.tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2018", "WebWorker"],
-    "outDir": "./out"
+    "lib": ["ES2019", "WebWorker"],
+    "outDir": "./out",
+    "allowJs": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "rules": {
+    "no-console": false
+  }
 }

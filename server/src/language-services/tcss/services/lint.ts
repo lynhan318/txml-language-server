@@ -71,7 +71,6 @@ export class LintVisitor implements nodes.IVisitor {
     this.documentText = document.getText();
     this.keyframes = new NodesByRootMap();
     this.validProperties = {};
-    console.log("settings", Settings);
     const properties = settings.getSetting(Settings.ValidProperties);
     if (Array.isArray(properties)) {
       properties.forEach((p) => {

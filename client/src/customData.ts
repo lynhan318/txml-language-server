@@ -28,7 +28,7 @@ export function getCustomDataSource(toDispose: Disposable[]) {
   );
   toDispose.push(
     workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration("html.customData")) {
+      if (e.affectsConfiguration("txml.customData")) {
         pathsInWorkspace = getCustomDataPathsInAllWorkspaces();
         onChange.fire();
       }
@@ -66,7 +66,7 @@ function getCustomDataPathsInAllWorkspaces(): string[] {
 
   for (let i = 0; i < workspaceFolders.length; i++) {
     const folderUri = workspaceFolders[i].uri;
-    const allHtmlConfig = workspace.getConfiguration("html", folderUri);
+    const allHtmlConfig = workspace.getConfiguration("txml", folderUri);
     const customDataInspect = allHtmlConfig.inspect<string[]>("customData");
     if (customDataInspect) {
       collect(customDataInspect.workspaceFolderValue, folderUri);

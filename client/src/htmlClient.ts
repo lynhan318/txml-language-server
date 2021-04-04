@@ -52,7 +52,7 @@ import { getCustomDataSource } from "./customData";
 
 namespace CustomDataChangedNotification {
   export const type: NotificationType<string[]> = new NotificationType(
-    "html/customDataChanged"
+    "txml/customDataChanged"
   );
 }
 
@@ -61,7 +61,7 @@ namespace TagCloseRequest {
     TextDocumentPositionParams,
     string,
     any
-  > = new RequestType("html/tag");
+  > = new RequestType("txml/tag");
 }
 // experimental: semantic tokens
 interface SemanticTokenParams {
@@ -73,18 +73,18 @@ namespace SemanticTokenRequest {
     SemanticTokenParams,
     number[] | null,
     any
-  > = new RequestType("html/semanticTokens");
+  > = new RequestType("txml/semanticTokens");
 }
 namespace SemanticTokenLegendRequest {
   export const type: RequestType0<
     { types: string[]; modifiers: string[] } | null,
     any
-  > = new RequestType0("html/semanticTokenLegend");
+  > = new RequestType0("txml/semanticTokenLegend");
 }
 
 namespace SettingIds {
   export const linkedEditing = "editor.linkedEditing";
-  export const formatEnable = "html.format.enable";
+  export const formatEnable = "txml.format.enable";
 }
 
 export interface TelemetryReporter {
@@ -437,7 +437,7 @@ export function startClient(
     },
   });
 
-  const promptForLinkedEditingKey = "html.promptForLinkedEditing";
+  const promptForLinkedEditingKey = "txml.promptForLinkedEditing";
   if (
     extensions.getExtension("formulahendry.auto-rename-tag") !== undefined &&
     context.globalState.get(promptForLinkedEditingKey) !== false

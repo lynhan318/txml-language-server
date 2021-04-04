@@ -17,7 +17,7 @@ export async function getSelectionRanges(
   document: TextDocument,
   positions: Position[]
 ) {
-  const htmlMode = languageModes.getMode("html");
+  const htmlMode = languageModes.getMode("txml");
   return Promise.all(
     positions.map(async (position) => {
       const htmlRange = await htmlMode!.getSelectionRange!(document, position);

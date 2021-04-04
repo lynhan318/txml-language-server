@@ -57,7 +57,7 @@ export async function format(
   let i = 0;
   let startPos = formatRange.start;
   let isHTML = (range: LanguageModeRange) =>
-    range.mode && range.mode.getId() === "html";
+    range.mode && range.mode.getId() === "txml";
 
   while (i < allRanges.length && !isHTML(allRanges[i])) {
     let range = allRanges[i];
@@ -80,7 +80,7 @@ export async function format(
   formatRange = Range.create(startPos, formatRange.end);
 
   // perform a html format and apply changes to a new document
-  let htmlMode = languageModes.getMode("html")!;
+  let htmlMode = languageModes.getMode("txml")!;
   let htmlEdits = await htmlMode.format!(
     document,
     formatRange,
