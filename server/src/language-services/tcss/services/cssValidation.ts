@@ -30,7 +30,9 @@ export class CSSValidation {
     stylesheet: nodes.Stylesheet,
     settings: LanguageSettings | undefined = this.settings
   ): Diagnostic[] {
-    if (!settings) {
+    //TODO: temporary disable cssValidate
+
+    if (true || !settings) {
       return [];
     }
     if (settings && settings.validate === false) {

@@ -41,6 +41,7 @@ import { getWordAtText, isWhitespaceOnly, repeat } from "../utils/strings";
 import { HTMLDocumentRegions } from "./embeddedSupport";
 
 import * as ts from "typescript";
+import * as path from "path";
 import {
   getSemanticTokens,
   getSemanticTokenLegend,
@@ -49,16 +50,16 @@ import {
 const JS_WORD_REGEX = /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g;
 
 function getLanguageServiceHost(scriptKind: ts.ScriptKind) {
+  let currentTextDocument = TextDocument.create("init", "javascript", 1, "");
   const compilerOptions: ts.CompilerOptions = {
     allowNonTsExtensions: true,
     allowJs: true,
-    lib: ["lib.es6.d.ts"],
+    lib: ["lib.payment.d.ts"],
     target: ts.ScriptTarget.Latest,
     moduleResolution: ts.ModuleResolutionKind.Classic,
     experimentalDecorators: false,
   };
 
-  let currentTextDocument = TextDocument.create("init", "javascript", 1, "");
   const jsLanguageService = import(
     /* webpackChunkName: "javascriptLibs" */ "./javascriptLibs"
   ).then((libs) => {
@@ -167,8 +168,8 @@ export function getJavaScriptMode(
         jsDocument.uri,
         offset,
         {
-          includeExternalModuleExports: false,
-          includeInsertTextCompletions: false,
+          includeExternalModuleExports: true,
+          includeInsertTextCompletions: true,
         }
       );
       if (!completions) {

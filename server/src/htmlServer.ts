@@ -37,6 +37,7 @@ import {
   DocumentLink,
   SymbolInformation,
   TextDocumentIdentifier,
+  LanguageMode,
 } from "./modes/languageModes";
 
 import { format } from "./modes/formatting";
@@ -134,14 +135,14 @@ export function startServer(
         const scopeUri = textDocument.uri;
         const configRequestParam: ConfigurationParams = {
           items: [
-            { scopeUri, section: "css" },
+            { scopeUri, section: "tcss" },
             { scopeUri, section: "txml" },
             { scopeUri, section: "javascript" },
           ],
         };
         promise = connection
           .sendRequest(ConfigurationRequest.type, configRequestParam)
-          .then((s) => ({ css: s[0], txml: s[1], javascript: s[2] }));
+          .then((s) => ({ tcss: s[0], txml: s[1], javascript: s[2] }));
         documentSettings[textDocument.uri] = promise;
       }
       return promise;
@@ -165,14 +166,12 @@ export function startServer(
           });
         }
       }
-      console.log("workSpaceFoler", workspaceFolders);
       requestService = getRequestService(
         initializationOptions?.handledSchemas || ["file"],
         connection,
         runtime
       );
 
-      console.log("requestService", requestService);
       const workspace = {
         get settings() {
           return globalSettings;
@@ -184,7 +183,7 @@ export function startServer(
 
       languageModes = getLanguageModes(
         initializationOptions?.embeddedLanguages || {
-          css: true,
+          tcss: true,
           javascript: true,
         },
         workspace,
@@ -192,7 +191,6 @@ export function startServer(
         requestService
       );
 
-      console.log("languageModes", languageModes);
       const dataPaths: string[] = initializationOptions?.dataPaths || [];
       fetchHTMLDataProviders(dataPaths, requestService).then(
         (dataProviders) => {
@@ -219,10 +217,10 @@ export function startServer(
         return c;
       }
 
-      // clientSnippetSupport = getClientCapability(
-      //   "textDocument.completion.completionItem.snippetSupport",
-      //   false
-      // );
+      clientSnippetSupport = getClientCapability(
+        "textDocument.completion.completionItem.snippetSupport",
+        false
+      );
       dynamicFormatterRegistration =
         getClientCapability(
           "textDocument.rangeFormatting.dynamicRegistration",
@@ -248,7 +246,7 @@ export function startServer(
         completionProvider: clientSnippetSupport
           ? {
               resolveProvider: true,
-              triggerCharacters: [".", ":", "<", '"', "=", "/"],
+              triggerCharacters: [".", ":", "<", '"', "=", "/", "-"],
             }
           : undefined,
         hoverProvider: true,
@@ -266,7 +264,6 @@ export function startServer(
         renameProvider: true,
         linkedEditingRangeProvider: true,
       };
-      console.log("clientCapacities", capabilities);
       return { capabilities };
     }
   );
@@ -342,7 +339,10 @@ export function startServer(
   // a document has closed: clear all diagnostics
   documents.onDidClose((event) => {
     cleanPendingValidation(event.document);
-    connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] });
+    connection.sendDiagnostics({
+      uri: event.document.uri,
+      diagnostics: [],
+    });
   });
 
   function cleanPendingValidation(textDocument: TextDocument): void {
@@ -369,7 +369,7 @@ export function startServer(
       settings && settings.txml && settings.txml.validate;
     if (validationSettings) {
       return (
-        (languageId === "css" && validationSettings.styles !== false) ||
+        (languageId === "tcss" && validationSettings.styles !== false) ||
         (languageId === "javascript" && validationSettings.scripts !== false)
       );
     }
@@ -419,11 +419,15 @@ export function startServer(
         if (!document) {
           return null;
         }
-        const mode = languageModes.getModeAtPosition(
-          document,
-          textDocumentPosition.position
-        );
-        connection.window.showInformationMessage(mode.getId());
+        let mode: LanguageMode;
+        if (document.languageId === "javascript") {
+          mode = languageModes.getMode("javascript");
+        } else {
+          mode = languageModes.getModeAtPosition(
+            document,
+            textDocumentPosition.position
+          );
+        }
         if (!mode || !mode.doComplete) {
           return { isIncomplete: true, items: [] };
         }
@@ -611,7 +615,7 @@ export function startServer(
               settings.txml.format.unformatted) ||
             "";
           const enabledModes = {
-            css: !unformattedTags.match(/\bstyle\b/),
+            tcss: !unformattedTags.match(/\bstyle\b/),
             javascript: !unformattedTags.match(/\bscript\b/),
           };
 

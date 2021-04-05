@@ -31,7 +31,7 @@ export function getCSSMode(
   let embeddedCSSDocuments = getLanguageModelCache<TextDocument>(
     10,
     60,
-    (document) => documentRegions.get(document).getEmbeddedDocument("css")
+    (document) => documentRegions.get(document).getEmbeddedDocument("tcss")
   );
   let cssStylesheets = getLanguageModelCache<Stylesheet>(10, 60, (document) =>
     cssLanguageService.parseStylesheet(document)
@@ -39,14 +39,14 @@ export function getCSSMode(
 
   return {
     getId() {
-      return "css";
+      return "tcss";
     },
     async doValidation(document: TextDocument, settings = workspace.settings) {
       let embedded = embeddedCSSDocuments.get(document);
       return cssLanguageService.doValidation(
         embedded,
         cssStylesheets.get(embedded),
-        settings && settings.css
+        settings && settings.tcss
       );
     },
     async doComplete(
@@ -63,7 +63,7 @@ export function getCSSMode(
           position,
           stylesheet,
           documentContext,
-          _settings?.css?.completion
+          _settings?.tcss?.completion
         ) || CompletionList.create()
       );
     },
@@ -77,7 +77,7 @@ export function getCSSMode(
         embedded,
         position,
         cssStylesheets.get(embedded),
-        settings?.css?.hover
+        settings?.tcss?.hover
       );
     },
     async findDocumentHighlight(document: TextDocument, position: Position) {

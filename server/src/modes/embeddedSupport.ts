@@ -57,7 +57,7 @@ export function getDocumentRegions(
         break;
       case TokenType.Styles:
         regions.push({
-          languageId: "css",
+          languageId: "tcss",
           start: scanner.getTokenOffset(),
           end: scanner.getTokenEnd(),
         });
@@ -261,7 +261,7 @@ function getEmbeddedDocument(
 function getPrefix(c: EmbeddedRegion) {
   if (c.attributeValue) {
     switch (c.languageId) {
-      case "css":
+      case "tcss":
         return CSS_STYLE_RULE + "{";
     }
   }
@@ -270,7 +270,7 @@ function getPrefix(c: EmbeddedRegion) {
 function getSuffix(c: EmbeddedRegion) {
   if (c.attributeValue) {
     switch (c.languageId) {
-      case "css":
+      case "tcss":
         return "}";
       case "javascript":
         return ";";
@@ -320,5 +320,5 @@ function getAttributeLanguage(attributeName: string): string | null {
   if (!match) {
     return null;
   }
-  return match[1] ? "css" : "javascript";
+  return match[1] ? "tcss" : "javascript";
 }

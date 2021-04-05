@@ -120,8 +120,8 @@ export function startClient(
 ) {
   let toDispose = context.subscriptions;
 
-  let documentSelector = ["txml"];
-  let embeddedLanguages = { css: true, javascript: true };
+  let documentSelector = ["txml", "javascript"];
+  let embeddedLanguages = { tcss: true, javascript: true };
 
   let rangeFormatting: Disposable | undefined = undefined;
 
@@ -131,7 +131,7 @@ export function startClient(
   let clientOptions: LanguageClientOptions = {
     documentSelector,
     synchronize: {
-      configurationSection: ["txml", "css", "javascript"], // the settings to synchronize
+      configurationSection: ["txml", "javascript"], // the settings to synchronize
     },
     initializationOptions: {
       embeddedLanguages,
@@ -240,7 +240,7 @@ export function startClient(
       if (legend) {
         const provider: DocumentSemanticTokensProvider &
           DocumentRangeSemanticTokensProvider = {
-          provideDocumentSemanticTokens(doc) {
+          async provideDocumentSemanticTokens(doc) {
             const params: SemanticTokenParams = {
               textDocument: client.code2ProtocolConverter.asTextDocumentIdentifier(
                 doc
@@ -252,7 +252,7 @@ export function startClient(
                 return data && new SemanticTokens(new Uint32Array(data));
               });
           },
-          provideDocumentRangeSemanticTokens(doc, range) {
+          async provideDocumentRangeSemanticTokens(doc, range) {
             const params: SemanticTokenParams = {
               textDocument: client.code2ProtocolConverter.asTextDocumentIdentifier(
                 doc
@@ -442,7 +442,9 @@ export function startClient(
     extensions.getExtension("formulahendry.auto-rename-tag") !== undefined &&
     context.globalState.get(promptForLinkedEditingKey) !== false
   ) {
-    const config = workspace.getConfiguration("editor", { languageId: "txml" });
+    const config = workspace.getConfiguration("editor", {
+      languageId: "txml",
+    });
     if (!config.get("linkedEditing") && !config.get("renameOnType")) {
       const activeEditorListener = window.onDidChangeActiveTextEditor(
         async (e) => {

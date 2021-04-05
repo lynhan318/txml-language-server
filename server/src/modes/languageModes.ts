@@ -89,7 +89,7 @@ export {
 export { TextDocument } from "vscode-languageserver-textdocument";
 
 export interface Settings {
-  css?: any;
+  tcss?: any;
   txml?: any;
   javascript?: any;
 }
@@ -235,8 +235,8 @@ export function getLanguageModes(
 
   let modes = Object.create(null);
   modes["txml"] = getHTMLMode(htmlLanguageService, workspace);
-  if (supportedLanguages["css"]) {
-    modes["css"] = getCSSMode(cssLanguageService, documentRegions, workspace);
+  if (supportedLanguages["tcss"]) {
+    modes["tcss"] = getCSSMode(cssLanguageService, documentRegions, workspace);
   }
   if (supportedLanguages["javascript"]) {
     modes["javascript"] = getJavaScriptMode(
@@ -263,6 +263,7 @@ export function getLanguageModes(
       let languageId = documentRegions
         .get(document)
         .getLanguageAtPosition(position);
+      console.log("languageId", languageId);
       if (languageId) {
         return modes[languageId];
       }

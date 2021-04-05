@@ -3,10 +3,8 @@
   "compilerOptions": {
     "lib": ["ES2019", "WebWorker"],
     "outDir": "./out",
-    "allowJs": true
+    "allowJs": true,
+    "typeRoots": ["./jsapi.d.ts"]
   },
-  "include": ["src"],
-  "rules": {
-    "no-console": false
-  }
+  "include": ["src"]
 }

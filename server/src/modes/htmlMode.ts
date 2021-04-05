@@ -46,9 +46,6 @@ export function getHTMLMode(
       let options = (settings && settings.txml && settings.txml.suggest) || {};
       let doAutoComplete =
         settings && settings.txml && settings.txml.autoClosingTags;
-      if (doAutoComplete) {
-        options.hideAutoCompleteProposals = true;
-      }
 
       const htmlDocument = htmlDocuments.get(document);
       let completionList = htmlLanguageService.doComplete2(

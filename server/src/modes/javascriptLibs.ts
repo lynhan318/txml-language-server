@@ -12,12 +12,7 @@ const serverFolder =
   basename(__dirname) === "dist"
     ? dirname(__dirname)
     : dirname(dirname(__dirname));
-const TYPESCRIPT_LIB_SOURCE = join(
-  serverFolder,
-  "../node_modules/typescript/lib"
-);
-console.log("TypescriptLIBSource", TYPESCRIPT_LIB_SOURCE);
-console.log("serverFolder", serverFolder);
+const TYPESCRIPT_LIB_SOURCE = join(serverFolder, "../server/lib/");
 export function loadLibrary(name: string) {
   let content = contents[name];
   if (typeof content !== "string") {
