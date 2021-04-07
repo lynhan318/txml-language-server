@@ -20,7 +20,7 @@ type APICallback<T> = {
   fail?: (error: Error) => any;
   complete?: () => any;
 } & T;
-declare namespace my {
+declare module my {
   const SDKVersion: string;
   function getAuthCode(options: {
     scopes: string[];

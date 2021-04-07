@@ -1,359 +1,469 @@
 {
-    "name": "txml-language-server",
-    "description": "A language server example",
-    "author": "Microsoft Corporation",
-    "license": "MIT",
-    "version": "1.0.0",
-    "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Microsoft/vscode-extension-samples"
-    },
-    "main": "./client/out/node/htmlClientMain",
-    "browser": "./client/dist/browser/htmlClientMain",
-    "publisher": "nhan-ly",
-    "categories": [],
-    "keywords": ["multi-root ready"],
-    "engines": {
-        "vscode": "^1.52.0"
-    },
-    "activationEvents": [
-        "onLanguage:txml",
-        "onLanguage:tcss",
-        "onLanguage:javascript"
+  "name": "txml-language-server",
+  "description": "A language server example",
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "version": "1.0.0",
+  "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/vscode-extension-samples"
+  },
+  "main": "./client/out/node/htmlClientMain",
+  "browser": "./client/dist/browser/htmlClientMain",
+  "publisher": "nhan-ly",
+  "categories": [],
+  "keywords": [
+    "multi-root ready"
+  ],
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "activationEvents": [
+    "onLanguage:txml",
+    "onLanguage:tcss",
+    "onLanguage:javascript"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tcss",
+        "aliases": [
+          "TCSS"
+        ],
+        "extensions": [
+          ".tcss"
+        ],
+        "filenamePatterns": [
+          "*.tcss"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "txml",
+        "aliases": [
+          "TXML"
+        ],
+        "extensions": [
+          ".txml"
+        ],
+        "filenamePatterns": [
+          "*.txml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
     ],
-    "contributes": {
-        "languages": [
-            {
-                "id": "tcss",
-                "aliases": ["TCSS"],
-                "extensions": [".tcss"],
-                "filenamePatterns": ["*.tcss"],
-                "configuration": "./language-configuration.json"
-            },
-            {
-                "id": "txml",
-                "aliases": ["TXML"],
-                "extensions": [".txml"],
-                "filenamePatterns": ["*.txml"],
-                "configuration": "./language-configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "txml",
-                "scopeName": "source.txml",
-                "path": "./syntaxes/txml.tmLanguage.json",
-                "embeddedLanguages": {
-                    "text.txml": "html",
-                    "source.tcss": "tcss",
-                    "source.js": "javascript"
-                }
-            }
-        ],
-        "configuration": {
-            "type": "object",
-            "title": "TXML language configuration",
-            "properties": {
-                "tcss.completion.triggerPropertyValueCompletion": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "%css.completion.triggerPropertyValueCompletion.desc%"
-                },
-                "tcss.completion.completePropertyWithSemicolon": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "%css.completion.completePropertyWithSemicolon.desc%"
-                },
-                "tcss.validate": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "%css.validate.desc%"
-                },
-                "tcss.hover.documentation": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "%css.hover.documentation%"
-                },
-                "tcss.hover.references": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "%css.hover.references%"
-                },
-                "tcss.lint.compatibleVendorPrefixes": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.compatibleVendorPrefixes.desc%"
-                },
-                "tcss.lint.vendorPrefix": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "description": "%css.lint.vendorPrefix.desc%"
-                },
-                "tcss.lint.duplicateProperties": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.duplicateProperties.desc%"
-                },
-                "tcss.lint.emptyRules": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "description": "%css.lint.emptyRules.desc%"
-                },
-                "tcss.lint.importStatement": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.importStatement.desc%"
-                },
-                "tcss.lint.boxModel": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "markdownDescription": "%css.lint.boxModel.desc%"
-                },
-                "tcss.lint.universalSelector": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "markdownDescription": "%css.lint.universalSelector.desc%"
-                },
-                "tcss.lint.zeroUnits": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.zeroUnits.desc%"
-                },
-                "tcss.lint.fontFaceProperties": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "markdownDescription": "%css.lint.fontFaceProperties.desc%"
-                },
-                "tcss.lint.hexColorLength": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "error",
-                    "description": "%css.lint.hexColorLength.desc%"
-                },
-                "tcss.lint.argumentsInColorFunction": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "error",
-                    "description": "%css.lint.argumentsInColorFunction.desc%"
-                },
-                "tcss.lint.unknownProperties": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "description": "%css.lint.unknownProperties.desc%"
-                },
-                "tcss.lint.validProperties": {
-                    "type": "array",
-                    "uniqueItems": true,
-                    "items": {
-                        "type": "string"
-                    },
-                    "scope": "resource",
-                    "default": [],
-                    "description": "%css.lint.validProperties.desc%"
-                },
-                "tcss.lint.ieHack": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.ieHack.desc%"
-                },
-                "tcss.lint.unknownVendorSpecificProperties": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.unknownVendorSpecificProperties.desc%"
-                },
-                "tcss.lint.propertyIgnoredDueToDisplay": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "markdownDescription": "%css.lint.propertyIgnoredDueToDisplay.desc%"
-                },
-                "tcss.lint.important": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "markdownDescription": "%css.lint.important.desc%"
-                },
-                "tcss.lint.float": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "markdownDescription": "%css.lint.float.desc%"
-                },
-                "tcss.lint.idSelector": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "ignore",
-                    "description": "%css.lint.idSelector.desc%"
-                },
-                "tcss.lint.unknownAtRules": {
-                    "type": "string",
-                    "scope": "resource",
-                    "enum": ["ignore", "warning", "error"],
-                    "default": "warning",
-                    "description": "%css.lint.unknownAtRules.desc%"
-                },
-                "tcss.trace.server": {
-                    "type": "string",
-                    "scope": "window",
-                    "enum": ["off", "messages", "verbose"],
-                    "default": "off",
-                    "description": "%css.trace.server.desc%"
-                },
-                "txml.format.enable": {
-                    "type": "boolean",
-                    "scope": "window",
-                    "default": true,
-                    "description": "enable html formater"
-                },
-                "txml.format.wrapLineLength": {
-                    "type": "integer",
-                    "scope": "resource",
-                    "default": 120,
-                    "description": "wrap line length"
-                },
-                "txml.format.unformatted": {
-                    "type": ["string", "null"],
-                    "scope": "resource",
-                    "default": "wbr",
-                    "markdownDescription": "unformatted"
-                },
-                "txml.format.contentUnformatted": {
-                    "type": ["string", "null"],
-                    "scope": "resource",
-                    "default": "pre,code,textarea",
-                    "markdownDescription": "unformat code"
-                },
-                "txml.format.indentInnerHtml": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": false,
-                    "markdownDescription": "indent inner txml"
-                },
-                "txml.format.preserveNewLines": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "Preserve new line"
-                },
-                "txml.format.maxPreserveNewLines": {
-                    "type": ["number", "null"],
-                    "scope": "resource",
-                    "default": null,
-                    "markdownDescription": "Max newline"
-                },
-                "txml.format.endWithNewline": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": false,
-                    "description": "End with new line"
-                },
-                "txml.format.extraLiners": {
-                    "type": ["string", "null"],
-                    "scope": "resource",
-                    "default": "head, body, /html",
-                    "markdownDescription": "Extra line"
-                },
-                "txml.format.unformattedContentDelimiter": {
-                    "type": "string",
-                    "scope": "resource",
-                    "default": "",
-                    "markdownDescription": "markdown"
-                },
-                "txml.validate.scripts": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "validate script"
-                },
-                "txml.validate.styles": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "validate css"
-                },
-                "txml.autoClosingTags": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "Auto close txml tag"
-                },
-                "txml.hover.documentation": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "hover for document"
-                },
-                "txml.hover.references": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": true,
-                    "description": "find references"
-                },
-                "txml.mirrorCursorOnMatchingTag": {
-                    "type": "boolean",
-                    "scope": "resource",
-                    "default": false,
-                    "description": "mirror cursor",
-                    "deprecationMessage": "mirror cursor"
-                },
-                "txml.trace.server": {
-                    "scope": "window",
-                    "type": "string",
-                    "enum": ["off", "messages", "verbose"],
-                    "default": "verbose",
-                    "description": "Traces the communication between VS Code and the language server."
-                }
-            }
+    "grammars": [
+      {
+        "language": "txml",
+        "scopeName": "source.txml",
+        "path": "./syntaxes/txml.tmLanguage.json",
+        "embeddedLanguages": {
+          "text.txml": "html",
+          "source.tcss": "tcss",
+          "source.js": "javascript"
         }
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -b",
-        "watch": "tsc -b -w",
-        "postinstall": "cd ./client && npm i && cd ../server && npm install && cd ..",
-        "test": "sh ./scripts/e2e.sh"
-    },
-    "devDependencies": {
-        "@types/mocha": "^8.0.3",
-        "@types/node": "^12.19.1",
-        "@types/vscode": "^1.52.0",
-        "typescript": "4.2.3",
-        "vscode-test": "^1.5.2"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "TXML language configuration",
+      "properties": {
+        "tcss.completion.triggerPropertyValueCompletion": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "%css.completion.triggerPropertyValueCompletion.desc%"
+        },
+        "tcss.completion.completePropertyWithSemicolon": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "%css.completion.completePropertyWithSemicolon.desc%"
+        },
+        "tcss.validate": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "%css.validate.desc%"
+        },
+        "tcss.hover.documentation": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "%css.hover.documentation%"
+        },
+        "tcss.hover.references": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "%css.hover.references%"
+        },
+        "tcss.lint.compatibleVendorPrefixes": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.compatibleVendorPrefixes.desc%"
+        },
+        "tcss.lint.vendorPrefix": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "%css.lint.vendorPrefix.desc%"
+        },
+        "tcss.lint.duplicateProperties": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.duplicateProperties.desc%"
+        },
+        "tcss.lint.emptyRules": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "%css.lint.emptyRules.desc%"
+        },
+        "tcss.lint.importStatement": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.importStatement.desc%"
+        },
+        "tcss.lint.boxModel": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "markdownDescription": "%css.lint.boxModel.desc%"
+        },
+        "tcss.lint.universalSelector": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "markdownDescription": "%css.lint.universalSelector.desc%"
+        },
+        "tcss.lint.zeroUnits": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.zeroUnits.desc%"
+        },
+        "tcss.lint.fontFaceProperties": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "markdownDescription": "%css.lint.fontFaceProperties.desc%"
+        },
+        "tcss.lint.hexColorLength": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "error",
+          "description": "%css.lint.hexColorLength.desc%"
+        },
+        "tcss.lint.argumentsInColorFunction": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "error",
+          "description": "%css.lint.argumentsInColorFunction.desc%"
+        },
+        "tcss.lint.unknownProperties": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "%css.lint.unknownProperties.desc%"
+        },
+        "tcss.lint.validProperties": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "scope": "resource",
+          "default": [],
+          "description": "%css.lint.validProperties.desc%"
+        },
+        "tcss.lint.ieHack": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.ieHack.desc%"
+        },
+        "tcss.lint.unknownVendorSpecificProperties": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.unknownVendorSpecificProperties.desc%"
+        },
+        "tcss.lint.propertyIgnoredDueToDisplay": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "markdownDescription": "%css.lint.propertyIgnoredDueToDisplay.desc%"
+        },
+        "tcss.lint.important": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "markdownDescription": "%css.lint.important.desc%"
+        },
+        "tcss.lint.float": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "markdownDescription": "%css.lint.float.desc%"
+        },
+        "tcss.lint.idSelector": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "ignore",
+          "description": "%css.lint.idSelector.desc%"
+        },
+        "tcss.lint.unknownAtRules": {
+          "type": "string",
+          "scope": "resource",
+          "enum": [
+            "ignore",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "%css.lint.unknownAtRules.desc%"
+        },
+        "tcss.trace.server": {
+          "type": "string",
+          "scope": "window",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "%css.trace.server.desc%"
+        },
+        "txml.format.enable": {
+          "type": "boolean",
+          "scope": "window",
+          "default": true,
+          "description": "enable html formater"
+        },
+        "txml.format.wrapLineLength": {
+          "type": "integer",
+          "scope": "resource",
+          "default": 120,
+          "description": "wrap line length"
+        },
+        "txml.format.unformatted": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "scope": "resource",
+          "default": "wbr",
+          "markdownDescription": "unformatted"
+        },
+        "txml.format.contentUnformatted": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "scope": "resource",
+          "default": "pre,code,textarea",
+          "markdownDescription": "unformat code"
+        },
+        "txml.format.indentInnerHtml": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false,
+          "markdownDescription": "indent inner txml"
+        },
+        "txml.format.preserveNewLines": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "Preserve new line"
+        },
+        "txml.format.maxPreserveNewLines": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "scope": "resource",
+          "default": null,
+          "markdownDescription": "Max newline"
+        },
+        "txml.format.endWithNewline": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false,
+          "description": "End with new line"
+        },
+        "txml.format.extraLiners": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "scope": "resource",
+          "default": "head, body, /html",
+          "markdownDescription": "Extra line"
+        },
+        "txml.format.unformattedContentDelimiter": {
+          "type": "string",
+          "scope": "resource",
+          "default": "",
+          "markdownDescription": "markdown"
+        },
+        "txml.validate.scripts": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "validate script"
+        },
+        "txml.validate.styles": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "validate css"
+        },
+        "txml.autoClosingTags": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "Auto close txml tag"
+        },
+        "txml.hover.documentation": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "hover for document"
+        },
+        "txml.hover.references": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": true,
+          "description": "find references"
+        },
+        "txml.mirrorCursorOnMatchingTag": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false,
+          "description": "mirror cursor",
+          "deprecationMessage": "mirror cursor"
+        },
+        "txml.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "verbose",
+          "description": "Traces the communication between VS Code and the language server."
+        }
+      }
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "postinstall": "cd ./client && npm i && cd ../server && npm install && cd ..",
+    "test": "sh ./scripts/e2e.sh"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^12.19.1",
+    "@types/vscode": "^1.52.0",
+    "typescript": "4.2.3",
+    "vscode-test": "^1.5.2"
+  }
 }
