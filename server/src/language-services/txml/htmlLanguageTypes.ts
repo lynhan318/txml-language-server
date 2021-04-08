@@ -33,8 +33,8 @@ import {
   Color,
   ColorInformation,
   ColorPresentation,
-} from 'vscode-languageserver-types';
-import { TextDocument } from 'vscode-languageserver-textdocument';
+} from "vscode-languageserver-types";
+import { TextDocument } from "vscode-languageserver-textdocument";
 
 export {
   TextDocument,
@@ -78,20 +78,20 @@ export interface HTMLFormatConfiguration {
   contentUnformatted?: string;
   indentInnerHtml?: boolean;
   wrapAttributes?:
-    | 'auto'
-    | 'force'
-    | 'force-aligned'
-    | 'force-expand-multiline'
-    | 'aligned-multiple'
-    | 'preserve'
-    | 'preserve-aligned';
+    | "auto"
+    | "force"
+    | "force-aligned"
+    | "force-expand-multiline"
+    | "aligned-multiple"
+    | "preserve"
+    | "preserve-aligned";
   wrapAttributesIndentSize?: number;
   preserveNewLines?: boolean;
   maxPreserveNewLines?: number;
   indentHandlebars?: boolean;
   endWithNewline?: boolean;
   extraLiners?: string;
-  indentScripts?: 'keep' | 'separate' | 'normal';
+  indentScripts?: "keep" | "separate" | "normal";
   templating?: boolean;
   unformattedContentDelimiter?: string;
 }
@@ -214,6 +214,7 @@ export interface IAttributeData {
   valueSet?: string;
   values?: IValueData[];
   references?: IReference[];
+  type?: string;
 }
 
 export interface IValueData {
