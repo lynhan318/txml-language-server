@@ -3,14 +3,13 @@
   "description": "A language server example",
   "author": "Microsoft Corporation",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
   "repository": {
     "type": "git",
     "url": "https://github.com/Microsoft/vscode-extension-samples"
   },
   "main": "./client/out/node/htmlClientMain",
-  "browser": "./client/dist/browser/htmlClientMain",
   "publisher": "nhan-ly",
   "categories": [],
   "keywords": [
@@ -21,24 +20,10 @@
   },
   "activationEvents": [
     "onLanguage:txml",
-    "onLanguage:tcss",
     "onLanguage:javascript"
   ],
   "contributes": {
     "languages": [
-      {
-        "id": "tcss",
-        "aliases": [
-          "TCSS"
-        ],
-        "extensions": [
-          ".tcss"
-        ],
-        "filenamePatterns": [
-          "*.tcss"
-        ],
-        "configuration": "./language-configuration.json"
-      },
       {
         "id": "txml",
         "aliases": [
